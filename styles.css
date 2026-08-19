@@ -825,6 +825,397 @@ img {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
 }
 
+.password-lab {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.password-lab::before {
+  position: absolute;
+  top: 10%;
+  right: -0.09em;
+  color: transparent;
+  content: "67";
+  font: 400 clamp(24rem, 49vw, 58rem) / 0.7 var(--display);
+  letter-spacing: -0.15em;
+  opacity: 0.06;
+  pointer-events: none;
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+.password-intro {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: end;
+  margin: clamp(4rem, 7vw, 7.5rem) 0 clamp(3.5rem, 6vw, 6rem);
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+}
+
+.password-intro .mini-label {
+  margin-bottom: 1.5rem;
+}
+
+.password-intro h2 {
+  margin: 0;
+  font: 400 clamp(5.5rem, 13vw, 14rem) / 0.76 var(--display);
+  letter-spacing: -0.04em;
+}
+
+.password-intro h2 span {
+  color: var(--red);
+}
+
+.password-lead {
+  max-width: 480px;
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.15rem, 1.75vw, 1.8rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.password-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 1.18fr) minmax(310px, 0.82fr);
+  gap: clamp(2.5rem, 5vw, 6rem);
+}
+
+.password-machine {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.4rem, 2.5vw, 2.5rem);
+  background: var(--ink);
+  color: var(--white);
+  box-shadow: 1.2rem 1.2rem 0 var(--red);
+}
+
+.password-machine::before {
+  position: absolute;
+  top: -36%;
+  right: -15%;
+  width: 50%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(223, 255, 0, 0.25);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2.5rem rgba(223, 255, 0, 0.035),
+    0 0 0 5rem rgba(223, 255, 0, 0.025);
+  content: "";
+  pointer-events: none;
+}
+
+.machine-topline {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: clamp(2.5rem, 5vw, 5rem);
+  gap: 1rem;
+  font: 400 0.61rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.secure-status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--acid);
+}
+
+.secure-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 0 rgba(223, 255, 0, 0.65);
+  animation: securePulse 2s infinite;
+}
+
+.password-field-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 253, 246, 0.58);
+  font: 400 0.62rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.password-display {
+  position: relative;
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.48);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.48);
+}
+
+.password-display input {
+  width: 100%;
+  min-width: 0;
+  padding: 1.45rem 1.2rem 1.45rem 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--white);
+  font: 500 clamp(0.83rem, 1.22vw, 1.2rem) / 1 var(--mono);
+  letter-spacing: 0.035em;
+}
+
+.password-display input::placeholder {
+  color: rgba(255, 253, 246, 0.34);
+  letter-spacing: 0.08em;
+}
+
+.password-display input:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--acid);
+}
+
+.password-display input.is-refreshing {
+  animation: passwordFlash 340ms steps(2);
+}
+
+.copy-password {
+  min-width: 92px;
+  padding: 0 1.15rem;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.48);
+  background: transparent;
+  color: var(--acid);
+  font: 500 0.64rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.copy-password:hover:not(:disabled),
+.copy-password:focus-visible:not(:disabled) {
+  background: var(--acid);
+  color: var(--ink);
+}
+
+.copy-password:disabled {
+  color: rgba(255, 253, 246, 0.28);
+  cursor: not-allowed;
+}
+
+.password-config {
+  display: grid;
+  align-items: end;
+  margin-top: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.length-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font: 400 0.65rem/1 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.length-heading output {
+  color: var(--acid);
+  font: 400 1.6rem/1 var(--display);
+}
+
+.length-control input {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.length-control input::-webkit-slider-runnable-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.length-control input::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -8px;
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--acid);
+  box-shadow: 0 0 0 4px var(--ink), 0 0 0 5px var(--acid);
+}
+
+.length-control input::-moz-range-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.length-control input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--acid);
+  box-shadow: 0 0 0 4px var(--ink), 0 0 0 5px var(--acid);
+}
+
+.length-control input:focus-visible {
+  outline: 1px solid var(--acid);
+  outline-offset: 5px;
+}
+
+.range-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+  color: rgba(255, 253, 246, 0.42);
+  font: 400 0.55rem/1 var(--mono);
+}
+
+.generate-password {
+  display: flex;
+  min-height: 74px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--acid);
+  background: var(--acid);
+  color: var(--ink);
+  gap: 1.5rem;
+  font: 500 0.69rem/1.25 var(--mono);
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.generate-password b {
+  font-size: 1.35rem;
+}
+
+.generate-password:hover,
+.generate-password:focus-visible {
+  background: transparent;
+  color: var(--acid);
+  transform: translateY(-3px);
+}
+
+.password-message {
+  min-height: 2.5em;
+  margin: 1.4rem 0 0;
+  color: rgba(255, 253, 246, 0.58);
+  font: 400 0.61rem/1.5 var(--mono);
+}
+
+.password-stats {
+  display: grid;
+  margin-top: clamp(2rem, 4vw, 4rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.password-stats > div {
+  display: grid;
+  min-width: 0;
+  padding: 0 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  gap: 0.5rem;
+}
+
+.password-stats > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.password-stats span,
+.password-stats small {
+  color: rgba(255, 253, 246, 0.48);
+  font: 400 0.56rem/1 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.password-stats strong {
+  overflow: hidden;
+  color: var(--acid);
+  font: 400 clamp(1.25rem, 2.1vw, 2rem) / 1 var(--display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.password-stats strong span {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.password-stats sup {
+  font: 400 0.58em/1 var(--mono);
+}
+
+.password-math {
+  padding-top: 0.25rem;
+}
+
+.password-math > .mini-label {
+  margin-bottom: 1.5rem;
+}
+
+.math-steps {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.math-steps li {
+  display: grid;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--ink);
+  grid-template-columns: 3rem 1fr;
+  gap: 0.75rem;
+}
+
+.math-steps li > span {
+  padding-top: 0.22rem;
+  font: 400 0.59rem/1 var(--mono);
+}
+
+.math-steps h3 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.math-steps p {
+  margin: 0 0 0.9rem;
+  color: rgba(11, 11, 11, 0.72);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.math-steps code {
+  display: inline-block;
+  padding: 0.55rem 0.7rem;
+  background: var(--acid);
+  font: 500 0.7rem/1.2 var(--mono);
+}
+
+.password-safety {
+  margin: 1.5rem 0 0;
+  padding: 1.2rem;
+  border-left: 5px solid var(--red);
+  background: var(--white);
+  font: 400 0.73rem/1.6 var(--mono);
+}
+
 .transmission {
   display: flex;
   min-height: 68vh;
@@ -1078,6 +1469,26 @@ img {
   }
 }
 
+@keyframes securePulse {
+  70% {
+    box-shadow: 0 0 0 7px rgba(223, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(223, 255, 0, 0);
+  }
+}
+
+@keyframes passwordFlash {
+  0%,
+  100% {
+    color: var(--white);
+  }
+  50% {
+    color: var(--acid);
+    transform: translateX(3px);
+  }
+}
+
 @keyframes glitch {
   0% {
     transform: translate(0) scale(1);
@@ -1235,7 +1646,9 @@ img {
   }
 
   .archive-head,
-  .signal-layout {
+  .signal-layout,
+  .password-intro,
+  .password-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1269,6 +1682,31 @@ img {
 
   .signal-stage {
     width: calc(100% - 1.2rem);
+  }
+
+  .password-intro {
+    gap: 2rem;
+  }
+
+  .password-intro h2 {
+    font-size: 19vw;
+  }
+
+  .password-lead {
+    max-width: 620px;
+    margin-left: 25%;
+  }
+
+  .password-layout {
+    gap: 5rem;
+  }
+
+  .password-machine {
+    width: calc(100% - 1.2rem);
+  }
+
+  .password-math {
+    max-width: 720px;
   }
 
   .footer-top {
@@ -1400,6 +1838,75 @@ img {
   .signal-topline,
   .signal-bottomline {
     font-size: 0.48rem;
+  }
+
+  .password-lab::before {
+    top: 6%;
+    font-size: 88vw;
+  }
+
+  .password-intro h2 {
+    font-size: 21vw;
+  }
+
+  .password-lead {
+    margin-left: 0;
+  }
+
+  .password-machine {
+    padding: 1.1rem;
+    box-shadow: 0.7rem 0.7rem 0 var(--red);
+  }
+
+  .machine-topline {
+    padding-bottom: 3rem;
+    font-size: 0.5rem;
+  }
+
+  .password-display {
+    display: grid;
+  }
+
+  .password-display input {
+    padding-right: 0;
+    font-size: 0.78rem;
+  }
+
+  .copy-password {
+    min-height: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.48);
+    border-left: 0;
+  }
+
+  .password-config {
+    grid-template-columns: 1fr;
+  }
+
+  .generate-password {
+    min-height: 64px;
+  }
+
+  .password-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .password-stats > div,
+  .password-stats > div:first-child {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 0;
+  }
+
+  .password-stats > div:first-child {
+    border-top: 0;
+  }
+
+  .password-stats strong {
+    font-size: 1.8rem;
+  }
+
+  .math-steps li {
+    grid-template-columns: 2.2rem 1fr;
   }
 
   .transmission {

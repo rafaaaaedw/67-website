@@ -39,6 +39,7 @@
         <a href="#manifesto">Manifesto</a>
         <a href="#arquivo">Arquivo</a>
         <a href="#sinal">Sinal</a>
+        <a href="#senha">Senha</a>
       </nav>
 
       <button class="menu-button" type="button" aria-label="Abrir menu" aria-expanded="false">
@@ -238,6 +239,160 @@
         </div>
       </section>
 
+      <section class="password-lab section-pad" id="senha" aria-labelledby="password-title">
+        <div class="section-label reveal">
+          <span>004</span>
+          <span>Gerador matemático</span>
+        </div>
+
+        <div class="password-intro">
+          <div class="reveal">
+            <p class="mini-label">Criptografia local // canal 067</p>
+            <h2 id="password-title">SEGREDO<br /><span>FORTE.</span></h2>
+          </div>
+          <p class="password-lead reveal">
+            Uma senha imprevisível não precisa de inspiração. Precisa de um espaço enorme de
+            possibilidades e de um sorteio justo.
+          </p>
+        </div>
+
+        <div class="password-layout">
+          <div class="password-machine reveal">
+            <div class="machine-topline">
+              <span>67_PASSWORD_ENGINE</span>
+              <span class="secure-status"><i aria-hidden="true"></i> CSPRNG ativo</span>
+            </div>
+
+            <label class="password-field-label" for="generatedPassword">Senha gerada</label>
+            <div class="password-display">
+              <input
+                id="generatedPassword"
+                type="text"
+                value=""
+                placeholder="PRONTO PARA GERAR"
+                readonly
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-describedby="passwordStatus passwordSafety"
+              />
+              <button class="copy-password" id="copyPassword" type="button" disabled>
+                Copiar
+              </button>
+            </div>
+
+            <div class="password-config">
+              <div class="length-control">
+                <div class="length-heading">
+                  <label for="passwordLength">Comprimento</label>
+                  <output id="passwordLengthValue" for="passwordLength">20</output>
+                </div>
+                <input
+                  id="passwordLength"
+                  type="range"
+                  min="16"
+                  max="32"
+                  step="1"
+                  value="20"
+                  aria-describedby="lengthHint"
+                />
+                <div class="range-scale" id="lengthHint" aria-hidden="true">
+                  <span>16</span><span>24</span><span>32</span>
+                </div>
+              </div>
+
+              <button class="generate-password" id="generatePassword" type="button">
+                <span>Gerar senha segura</span>
+                <b aria-hidden="true">↗</b>
+              </button>
+            </div>
+
+            <p class="password-message" id="passwordStatus" role="status" aria-live="polite">
+              Pronto para criar uma senha sem sair do seu dispositivo.
+            </p>
+
+            <div class="password-stats" aria-label="Força matemática da senha">
+              <div>
+                <span>Alfabeto</span>
+                <strong>67</strong>
+                <small>símbolos</small>
+              </div>
+              <div id="combinationStat">
+                <span>Espaço</span>
+                <strong><span id="combinationMantissa">3,32</span> × 10<sup id="combinationExponent">36</sup></strong>
+                <small>combinações</small>
+              </div>
+              <div>
+                <span>Entropia</span>
+                <strong><span id="entropyStat">121,3</span></strong>
+                <small>bits</small>
+              </div>
+            </div>
+          </div>
+
+          <aside class="password-math reveal" aria-labelledby="math-title">
+            <p class="mini-label" id="math-title">Como a matemática protege</p>
+            <ol class="math-steps">
+              <li>
+                <span>01</span>
+                <div>
+                  <h3>Um alfabeto de 67 símbolos</h3>
+                  <p>
+                    Cada posição pode receber uma letra maiúscula, minúscula, número ou um dos
+                    cinco símbolos mais aceitos.
+                  </p>
+                  <code>A = 26 + 26 + 10 + 5 = 67</code>
+                </div>
+              </li>
+              <li>
+                <span>02</span>
+                <div>
+                  <h3>Um espaço que cresce exponencialmente</h3>
+                  <p>
+                    Com <span id="spaceLengthText">20</span> posições independentes, multiplicamos
+                    67 por ele mesmo <span id="spaceLengthRepeat">20</span> vezes.
+                  </p>
+                  <code>
+                    Ω = 67<sup id="spaceLengthPower">20</sup> ≈
+                    <span id="spaceMantissa">3,32</span> × 10<sup id="spaceExponent">36</sup>
+                  </code>
+                </div>
+              </li>
+              <li>
+                <span>03</span>
+                <div>
+                  <h3>Entropia mede a imprevisibilidade</h3>
+                  <p>
+                    Quanto mais bits, mais tentativas seriam necessárias para explorar todas as
+                    possibilidades.
+                  </p>
+                  <code>
+                    H = <span id="entropyLength">20</span> × log₂(67) ≈
+                    <span id="entropyBits">121,3</span> bits
+                  </code>
+                </div>
+              </li>
+              <li>
+                <span>04</span>
+                <div>
+                  <h3>Sorteio criptográfico, sem viés</h3>
+                  <p>
+                    O gerador pseudoaleatório criptograficamente seguro (CSPRNG) do navegador
+                    fornece bytes de 0 a 255. Aceitamos apenas 0 a 200: são exatamente três grupos
+                    de 67. Assim, cada símbolo tem a mesma chance.
+                  </p>
+                  <code>201 = 3 × 67</code>
+                </div>
+              </li>
+            </ol>
+            <p class="password-safety" id="passwordSafety">
+              A senha é criada e mantida apenas nesta página. Use uma diferente em cada serviço,
+              guarde-a em um gerenciador de senhas e ative a autenticação em dois fatores.
+            </p>
+          </aside>
+        </div>
+      </section>
+
       <section class="transmission" aria-label="Ativar transmissão 67">
         <button class="transmission-button" id="transmissionButton" type="button">
           <span class="button-small">Você chegou até aqui</span>
@@ -256,6 +411,7 @@
           <a href="#manifesto">Manifesto</a>
           <a href="#arquivo">Arquivo</a>
           <a href="#sinal">Sinal</a>
+          <a href="#senha">Senha</a>
         </div>
       </div>
       <div class="footer-bottom">

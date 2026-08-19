@@ -10,6 +10,16 @@ const modeDescription = document.querySelector("#modeDescription");
 const transmissionButton = document.querySelector("#transmissionButton");
 const transmissionOverlay = document.querySelector("#transmissionOverlay");
 const overlayClose = document.querySelector(".overlay-close");
+const generatePasswordButton = document.querySelector("#generatePassword");
+const copyPasswordButton = document.querySelector("#copyPassword");
+const generatedPassword = document.querySelector("#generatedPassword");
+const passwordLength = document.querySelector("#passwordLength");
+const passwordLengthValue = document.querySelector("#passwordLengthValue");
+const passwordStatus = document.querySelector("#passwordStatus");
+
+const PASSWORD_ALPHABET =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+const RANDOM_BYTE_VALUES = 256;
 
 const modes = {
   day: {
@@ -20,6 +30,145 @@ const modes = {
     code: "67_UNKNOWN.EXE",
     description: "Escuro, silencioso e definitivamente acordado.",
   },
+};
+
+const passwordMathElements = {
+  combinationMantissa: document.querySelector("#combinationMantissa"),
+  combinationExponent: document.querySelector("#combinationExponent"),
+  combinationStat: document.querySelector("#combinationStat"),
+  entropyStat: document.querySelector("#entropyStat"),
+  spaceLengthText: document.querySelector("#spaceLengthText"),
+  spaceLengthRepeat: document.querySelector("#spaceLengthRepeat"),
+  spaceLengthPower: document.querySelector("#spaceLengthPower"),
+  spaceMantissa: document.querySelector("#spaceMantissa"),
+  spaceExponent: document.querySelector("#spaceExponent"),
+  entropyLength: document.querySelector("#entropyLength"),
+  entropyBits: document.querySelector("#entropyBits"),
+};
+
+const formatDecimal = (value, digits) =>
+  new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(value);
+
+const calculatePasswordStrength = (length) => {
+  const logarithm = length * Math.log10(PASSWORD_ALPHABET.length);
+  const exponent = Math.floor(logarithm);
+
+  return {
+    exponent,
+    mantissa: 10 ** (logarithm - exponent),
+    entropy: length * Math.log2(PASSWORD_ALPHABET.length),
+  };
+};
+
+const updatePasswordMath = (length) => {
+  const { exponent, mantissa, entropy } = calculatePasswordStrength(length);
+  const mantissaText = formatDecimal(mantissa, 2);
+  const entropyText = formatDecimal(entropy, 1);
+
+  passwordLengthValue.textContent = String(length);
+  passwordMathElements.combinationMantissa.textContent = mantissaText;
+  passwordMathElements.combinationExponent.textContent = String(exponent);
+  passwordMathElements.entropyStat.textContent = entropyText;
+  passwordMathElements.spaceLengthText.textContent = String(length);
+  passwordMathElements.spaceLengthRepeat.textContent = String(length);
+  passwordMathElements.spaceLengthPower.textContent = String(length);
+  passwordMathElements.spaceMantissa.textContent = mantissaText;
+  passwordMathElements.spaceExponent.textContent = String(exponent);
+  passwordMathElements.entropyLength.textContent = String(length);
+  passwordMathElements.entropyBits.textContent = entropyText;
+  passwordMathElements.combinationStat.setAttribute(
+    "aria-label",
+    `${mantissaText} vezes 10 elevado a ${exponent} combinações`,
+  );
+};
+
+const createSecurePassword = (length) => {
+  if (!window.crypto || typeof window.crypto.getRandomValues !== "function") {
+    throw new Error("A fonte criptográfica do navegador não está disponível.");
+  }
+
+  const fairByteLimit =
+    Math.floor(RANDOM_BYTE_VALUES / PASSWORD_ALPHABET.length) * PASSWORD_ALPHABET.length;
+  const characters = [];
+
+  while (characters.length < length) {
+    const remaining = length - characters.length;
+    const randomBytes = new Uint8Array(Math.max(remaining * 2, 32));
+    window.crypto.getRandomValues(randomBytes);
+
+    for (const randomByte of randomBytes) {
+      if (randomByte >= fairByteLimit) continue;
+
+      characters.push(PASSWORD_ALPHABET[randomByte % PASSWORD_ALPHABET.length]);
+      if (characters.length === length) break;
+    }
+  }
+
+  return characters.join("");
+};
+
+let copyFeedbackTimer;
+
+const resetCopyFeedback = () => {
+  window.clearTimeout(copyFeedbackTimer);
+  copyPasswordButton.textContent = "Copiar";
+};
+
+const refreshPassword = () => {
+  const length = Number(passwordLength.value);
+  resetCopyFeedback();
+
+  try {
+    generatedPassword.value = createSecurePassword(length);
+    copyPasswordButton.disabled = false;
+    passwordStatus.textContent = `Nova senha de ${length} caracteres criada só neste dispositivo.`;
+    generatedPassword.classList.remove("is-refreshing");
+    void generatedPassword.offsetWidth;
+    generatedPassword.classList.add("is-refreshing");
+  } catch (error) {
+    generatedPassword.value = "";
+    copyPasswordButton.disabled = true;
+    generatePasswordButton.disabled = true;
+    passwordStatus.textContent = error.message;
+  }
+};
+
+const copyGeneratedPassword = async () => {
+  if (!generatedPassword.value) return;
+
+  try {
+    let copied = false;
+
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(generatedPassword.value);
+        copied = true;
+      } catch {
+        copied = false;
+      }
+    }
+
+    if (!copied) {
+      generatedPassword.focus();
+      generatedPassword.select();
+      copied = document.execCommand("copy");
+      generatedPassword.setSelectionRange(0, 0);
+    }
+
+    if (!copied) throw new Error("Não foi possível copiar automaticamente.");
+
+    copyPasswordButton.textContent = "Copiada ✓";
+    passwordStatus.textContent =
+      "Senha copiada. Guarde-a em um gerenciador e não reutilize em outros serviços.";
+    copyFeedbackTimer = window.setTimeout(resetCopyFeedback, 2200);
+  } catch (error) {
+    generatedPassword.focus();
+    generatedPassword.select();
+    passwordStatus.textContent = `${error.message} Selecione a senha e copie manualmente.`;
+  }
 };
 
 const updateClock = () => {
@@ -118,6 +267,30 @@ modeButtons.forEach((button) => {
     window.setTimeout(() => signalStage.classList.remove("is-switching"), 360);
   });
 });
+
+if (
+  generatePasswordButton &&
+  copyPasswordButton &&
+  generatedPassword &&
+  passwordLength &&
+  passwordLengthValue &&
+  passwordStatus
+) {
+  updatePasswordMath(Number(passwordLength.value));
+  refreshPassword();
+
+  passwordLength.addEventListener("input", () => {
+    const length = Number(passwordLength.value);
+    updatePasswordMath(length);
+    generatedPassword.value = "";
+    copyPasswordButton.disabled = true;
+    resetCopyFeedback();
+    passwordStatus.textContent = `Comprimento ajustado para ${length}. Clique em gerar senha segura.`;
+  });
+
+  generatePasswordButton.addEventListener("click", refreshPassword);
+  copyPasswordButton.addEventListener("click", copyGeneratedPassword);
+}
 
 let frame = 607;
 setInterval(() => {
